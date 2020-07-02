@@ -1,0 +1,7 @@
+---
+VAR_Zabbix40_Server_linux_extracting_rolename:
+  - Zabbix40-Server_install
+  - Zabbix40-Server_setup
+  - Zabbix40-Server_ossetup
+VAR_Zabbix40_Server_linux_gathering_dest: '{{ playbook_dir }}/_gathered_data'
+VAR_Zabbix40_Server_linux_extracting_dest: '{{ playbook_dir }}/_parameters'

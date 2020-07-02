@@ -1,0 +1,37 @@
+---
+- name: check param VAR_Zabbix40_Server_linux_extracting_rolename subElement
+  stat:
+    path: "{{ VAR_Zabbix40_Server_linux_gathering_dest }}/{{ inventory_hostname }}/Zabbix40_Server_gathering_linux"
+  delegate_to: localhost
+  become: no
+  register: file_exist
+
+- name: parameter_generate run
+  block:
+  # 1-01  Zabbix40_Server Install Roleのパラメータ生成
+    - name: Execute the parameter_generate module for Zabbix40-Server_install
+      parameter_generate:
+        rolename: "{{ outer_item }}"
+        collect_root: "{{ VAR_Zabbix40_Server_linux_gathering_dest }}/{{ inventory_hostname }}/Zabbix40_Server_gathering_linux"
+        dest: "{{ VAR_Zabbix40_Server_linux_extracting_dest }}"
+        specific: "python {{ role_path }}/files/Zabbix40-Server_install.py"
+      when: outer_item == "Zabbix40-Server_install"
+
+  # 1-02　Zabbix40_Server設定Roleのパラメータ生成
+    - name: Execute the parameter_generate module for Zabbix40-Server_setup
+      parameter_generate:
+        rolename: "{{ outer_item }}"
+        collect_root: "{{ VAR_Zabbix40_Server_linux_gathering_dest }}/{{ inventory_hostname }}/Zabbix40_Server_gathering_linux"
+        dest: "{{ VAR_Zabbix40_Server_linux_extracting_dest }}"
+        specific: "python {{ role_path }}/files/Zabbix40-Server_setup.py"
+      when: outer_item == "Zabbix40-Server_setup"
+
+  # 1-03　OSセットアップ--DBサービス自動起動Roleのパラメータ生成
+    - name: Execute the parameter_generate module for Zabbix40-Server_ossetup
+      parameter_generate:
+        rolename: "{{ outer_item }}"
+        collect_root: "{{ VAR_Zabbix40_Server_linux_gathering_dest }}/{{ inventory_hostname }}/Zabbix40_Server_gathering_linux"
+        dest: "{{ VAR_Zabbix40_Server_linux_extracting_dest }}"
+        specific: "python {{ role_path }}/files/Zabbix40-Server_ossetup.py"
+      when: outer_item == "Zabbix40-Server_ossetup"
+  when: file_exist.stat.exists != false

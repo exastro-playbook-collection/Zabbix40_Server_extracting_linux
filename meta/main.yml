@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  role_name: Zabbix-Server_extracting
+  description: Generate parameters for Zabbix-Server version 4.0
+  author: NEC Corporation
+  company: NEC Corporation
+  license: Apache License 2.0
+  min_ansible_version: 2.8
+  platforms:
+    - name: EL
+      versions:
+        - 7
+  galaxy_tags: []
+  categories: []
+
+dependencies: []
